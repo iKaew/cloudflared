@@ -1,0 +1,54 @@
+name: Build Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  schedule:
+    - cron: '00 00/6 * * *'
+
+jobs:
+  build:
+    env:
+      DOCKER_REPO: cloudflared
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Source checkout
+      uses: actions/checkout@v2
+
+    - name: Setup QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Get cloudflared latest version
+      run: |
+        CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
+    
+    - name: Check if this is a new release
+      if: ${{ github.event_name != 'pull_request' }}
+      run: |
+        docker manifest inspect ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }} &>/dev/null \
+          && echo 'IS_NEW_RELEASE=false' | tee -a $GITHUB_ENV \
+          || echo 'IS_NEW_RELEASE=true' | tee -a $GITHUB_ENV
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        push: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.IS_NEW_RELEASE == 'true' }}
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }}
+          ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
+        platforms: linux/amd64, linux/arm64, linux/arm/v7
+        build-args: |
+          "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}"
