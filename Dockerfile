@@ -16,6 +16,7 @@ RUN \
   set -x && \
   [[ -z "${CLOUDFLARED_ARCH}" ]] && CLOUDFLARED_ARCH="$(uname -m)" || true && \
   [[ "${CLOUDFLARED_ARCH}" == "x86_64" ]] && CLOUDFLARED_ARCH="amd64" || true && \
+  [[ "${CLOUDFLARED_ARCH}" == "i686" ]] && CLOUDFLARED_ARCH="386" || true && \
   [[ "${CLOUDFLARED_ARCH}" == "aarch64" ]] && CLOUDFLARED_ARCH="arm64" || true && \
   [[ "${CLOUDFLARED_ARCH}" == "armv7l" ]] && CLOUDFLARED_ARCH="arm" || true && \
   [[ -z "${CLOUDFLARED_VERSION}" ]] && \

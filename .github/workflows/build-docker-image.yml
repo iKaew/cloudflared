@@ -49,6 +49,6 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }}
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
-        platforms: linux/amd64, linux/arm64, linux/arm/v7
+        platforms: linux/amd64, linux/386, linux/arm64, linux/arm/v7
         build-args: |
           "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}"
