@@ -47,9 +47,10 @@ jobs:
           || echo 'IS_NEW_RELEASE=true' | tee -a $GITHUB_ENV
 
     - name: Build and push
+      if: ${{ (github.ref == 'refs/heads/main' && env.IS_NEW_RELEASE == 'true') || (github.event_name == 'pull_request') }}
       uses: docker/build-push-action@v2
       with:
-        push: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.IS_NEW_RELEASE == 'true' }}
+        push: ${{ github.ref == 'refs/heads/main' && env.IS_NEW_RELEASE == 'true' && github.event_name != 'pull_request' }}
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }}
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
