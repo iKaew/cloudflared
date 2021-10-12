@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   pull_request:
   schedule:
-    - cron: '00 00/6 * * *'
+    - cron: '00 00 * * *'
 
 jobs:
   build:
@@ -34,6 +34,10 @@ jobs:
       run: |
         CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
+
+    - name: Get current date
+      run: |
+        echo "CURRENT_DATE=$(date --iso-8601=date)" | tee -a $GITHUB_ENV
     
     - name: Check if this is a new release
       if: ${{ github.event_name != 'pull_request' }}
@@ -43,12 +47,14 @@ jobs:
           || echo 'IS_NEW_RELEASE=true' | tee -a $GITHUB_ENV
 
     - name: Build and push
+      if: ${{ (github.ref == 'refs/heads/main' && env.IS_NEW_RELEASE == 'true') || (github.event_name == 'pull_request') }}
       uses: docker/build-push-action@v2
       with:
-        push: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.IS_NEW_RELEASE == 'true' }}
+        push: ${{ github.ref == 'refs/heads/main' && env.IS_NEW_RELEASE == 'true' && github.event_name != 'pull_request' }}
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }}
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
         platforms: linux/amd64, linux/arm64, linux/arm/v7
         build-args: |
+          "BUILD_DATE=${{ env.CURRENT_DATE }}"
           "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}"
