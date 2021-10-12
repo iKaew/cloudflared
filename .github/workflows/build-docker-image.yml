@@ -34,6 +34,10 @@ jobs:
       run: |
         CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
+
+    - name: Get current date
+      run: |
+        echo "CURRENT_DATE=$(date --iso-8601=date)" | tee -a $GITHUB_ENV
     
     - name: Check if this is a new release
       if: ${{ github.event_name != 'pull_request' }}
@@ -51,4 +55,5 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
         platforms: linux/amd64, linux/arm64, linux/arm/v7
         build-args: |
+          "BUILD_DATE=${{ env.CURRENT_DATE }}"
           "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}"
