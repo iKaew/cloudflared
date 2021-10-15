@@ -1,6 +1,6 @@
 # Cloudflared container image
 
-To build container image for cloudflared release from [cloudflared project](https://github.com/cloudflare/cloudflared)
+To build multi-arch container image for cloudflared release from [cloudflared project](https://github.com/cloudflare/cloudflared)
 
 ## Usage
 Start cloudflared help
