@@ -14,8 +14,6 @@ Start Argo Tunnel hello world
 ## Dockerfile
 ### Build arguments
 - CLOUDFLARED_VERSION - if left unspecified, it will use the latest release
-- CLOUDFLARED_OS - linux (default), ~~windows~~, ~~darwin~~
-- CLOUDFLARED_ARCH - 386, amd64, arm, arm64
 
 ### How to build
 Build image using latest cloudflare release
