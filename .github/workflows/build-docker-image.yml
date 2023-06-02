@@ -32,7 +32,10 @@ jobs:
     #  run: |
     #    CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     #    echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
-
+    - name: Print Cloudflared version 
+      run: |
+        echo "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}
+        
     - name: Get current date
       run: |
         echo "CURRENT_DATE=$(date --iso-8601=date)" | tee -a $GITHUB_ENV
