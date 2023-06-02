@@ -28,10 +28,10 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     
-    - name: Get cloudflared latest version
-      run: |
-        CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-        echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
+    #- name: Get cloudflared latest version
+    #  run: |
+    #    CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    #    echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
 
     - name: Get current date
       run: |
