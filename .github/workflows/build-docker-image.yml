@@ -34,7 +34,7 @@ jobs:
     #    echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
     - name: Print Cloudflared version 
       run: |
-        echo "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}
+        echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
         
     - name: Get current date
       run: |
