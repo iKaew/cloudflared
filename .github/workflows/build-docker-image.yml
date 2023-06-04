@@ -9,7 +9,7 @@ jobs:
   build:
     env:
       DOCKER_REPO: cloudflared
-      CLOUDFLARED_VESRION: 2023.4.2
+      CLOUDFLARED_VESRION: 2023.2.1
 
     runs-on: ubuntu-latest
 
