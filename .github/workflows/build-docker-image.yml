@@ -9,6 +9,7 @@ jobs:
   build:
     env:
       DOCKER_REPO: cloudflared
+      CLOUDFLARED_VESRION: 2023.4.2
 
     runs-on: ubuntu-latest
 
@@ -32,9 +33,6 @@ jobs:
     #  run: |
     #    CLOUDFLARED_VESRION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     #    echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
-    - name: Print Cloudflared version 
-      run: |
-        echo "CLOUDFLARED_VESRION=$CLOUDFLARED_VESRION" | tee -a $GITHUB_ENV
         
     - name: Get current date
       run: |
