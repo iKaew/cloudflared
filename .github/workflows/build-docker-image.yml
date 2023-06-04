@@ -9,7 +9,7 @@ jobs:
   build:
     env:
       DOCKER_REPO: cloudflared
-      CLOUDFLARED_VESRION: 2023.2.1
+      #CLOUDFLARED_VERSION: 2023.2.1
 
     runs-on: ubuntu-latest
 
@@ -41,7 +41,7 @@ jobs:
     - name: Check if this is a new release
       if: ${{ github.event_name != 'pull_request' }}
       run: |
-        docker manifest inspect ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }} &>/dev/null \
+        docker manifest inspect ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VERSION }} &>/dev/null \
           && echo 'IS_NEW_RELEASE=false' | tee -a $GITHUB_ENV \
           || echo 'IS_NEW_RELEASE=true' | tee -a $GITHUB_ENV
 
@@ -51,9 +51,9 @@ jobs:
       with:
         push: ${{ github.ref == 'refs/heads/main' && env.IS_NEW_RELEASE == 'true' && github.event_name != 'pull_request' }}
         tags: |
-          ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VESRION }}
+          ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:${{ env.CLOUDFLARED_VERSION }}
           ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPO }}:latest
         platforms: linux/amd64, linux/arm64, linux/arm/v7
         build-args: |
           "BUILD_DATE=${{ env.CURRENT_DATE }}"
-          "CLOUDFLARED_VESRION=${{ env.CLOUDFLARED_VESRION }}"
+          "CLOUDFLARED_VERSION=${{ env.CLOUDFLARED_VERSION }}"
