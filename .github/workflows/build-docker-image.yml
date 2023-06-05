@@ -56,4 +56,4 @@ jobs:
         platforms: linux/amd64, linux/arm64, linux/arm/v7
         build-args: |
           "BUILD_DATE=${{ env.CURRENT_DATE }}"
-          "CLOUDFLARED_VERSION=${{ env.CLOUDFLARED_VERSION }}"
+        #  "CLOUDFLARED_VERSION=${{ env.CLOUDFLARED_VERSION }}"
