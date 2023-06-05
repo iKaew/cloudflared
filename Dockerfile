@@ -1,4 +1,4 @@
-FROM golang:alpine as builder
+FROM golang:alpine3.16 as builder
 
 ARG CLOUDFLARED_VERSION
 ARG CLOUDFLARED_REPO=cloudflare/cloudflared
