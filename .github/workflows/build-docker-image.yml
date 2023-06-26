@@ -9,7 +9,7 @@ jobs:
   build:
     env:
       DOCKER_REPO: cloudflared
-      CLOUDFLARED_VERSION: 2023.6.0
+      CLOUDFLARED_VERSION: 2023.6.1
 
     runs-on: ubuntu-latest
 
